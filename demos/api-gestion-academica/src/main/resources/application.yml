@@ -1,6 +1,6 @@
 server: 
   port: 8082
-  servlet.context-path: /api-gestion-ademica
+  servlet.context-path: /api-gestion-academica
   
 spring:
   application:
