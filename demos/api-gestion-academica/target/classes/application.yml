@@ -1,0 +1,16 @@
+server: 
+  port: 8082
+  servlet.context-path: /api-gestion-ademica
+  
+spring:
+  application:
+    name: api-pedidos
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:6080/realms/Demo/protocol/openid-connect/certs
+
+keycloak:
+   resource: app-web-v1
