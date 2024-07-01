@@ -1,16 +1,29 @@
 server: 
   port: 8082
   servlet.context-path: /api-gestion-academica
-  
+ 
 spring:
   application:
     name: api-pedidos
+ 
+# Databsase
+#MySQl Database
+#spring.jpa.hibernate.ddl-auto=create
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_academica?createDatabaseIfNotExist=true&useSSL=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# Keycloak  
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:6080/realms/Demo/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:6080/realms/real_academico_v1/protocol/openid-connect/certs
 
 keycloak:
-   resource: app-web-v1
+   resource: api-gestion-academica

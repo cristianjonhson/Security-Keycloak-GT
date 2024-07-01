@@ -18,24 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import cl.edu.galaxy.training.apps.siac.api_gestion_academica.entity.CompanyEntity;
 import lombok.extern.slf4j.Slf4j;
+import cl.edu.galaxy.training.apps.siac.api_gestion_academica.entity.CompanyEntity;
 
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/demos") // plural
+@RequestMapping("/api/v1/demos") // plural
 public class DemoREST {
 
 	// Default  - Preterminado
 	@GetMapping
-	public Map<String, String> demo() {
-		
-		Map<String, String> data = new HashMap<>();
+	public String demo() {
+		return "Spring Boot Demo v1";
 
-		data.put("mensaje", "Spring Boot Demo v1 - Keycloak");
-		return data;
 	}
 
 	@GetMapping("/v2")

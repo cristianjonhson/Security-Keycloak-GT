@@ -32,14 +32,25 @@ import java.util.stream.Collectors;
 @EnableMethodSecurity
 public class SecurityConfig {
 	
-	
 	@Value("${keycloak.resource}")
-	private String clienId;
+	private String clienId; // Application
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		
+		log.info("filterChain...");
+		
 		http.authorizeHttpRequests(auth -> {
-			auth.requestMatchers("/**").fullyAuthenticated();
+			
+			auth.requestMatchers("/api/v1/demos/**").permitAll();
+			
+			auth.requestMatchers("/api/v1/test/**","/api/v1/companies/**");
+			
+			auth.requestMatchers("/api/v1/companies/private/**").hasAuthority("admin").anyRequest().fullyAuthenticated();
+			
+			//auth.requestMatchers("/api/v1/companies/**").hasAnyAuthority("admin","director","profesor").anyRequest().fullyAuthenticated();
+		
+			
 		}).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
 
 		return http.build();
@@ -48,25 +59,28 @@ public class SecurityConfig {
 	@Bean
 	public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
 		Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
-
+			
+			log.info("jwtAuthenticationConverterForKeycloak...");
+			/*
 			Map<String, Object> claims = jwt.getClaims();
 
 			for (String key : claims.keySet()) {
 				log.info(" - key {} -> {}", key, claims.get(key));
-			}
+			}*/
 			
-			/*
+			
 			Object realm = jwt.getClaim("realm_access");
 
 			LinkedTreeMap<String, List<String>> realmRoleMap = (LinkedTreeMap<String, List<String>>) realm;
 
 			List<String> realmRoles = new ArrayList<>(realmRoleMap.get("roles"));
-			*/
+			
 			Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
 
+			/*
 			for (String key : resourceAccess.keySet()) {
 				log.info("key {} -> {}", key, resourceAccess.get(key));
-			}
+			}*/
 
 			Object client = resourceAccess.get(clienId);
 
@@ -74,19 +88,21 @@ public class SecurityConfig {
 
 			List<String> clientRoles = new ArrayList<>(clientRoleMap.get("roles"));
 			
-			/*
+			
 			Collection<GrantedAuthority> realmListSimpleGrantedAuthority = realmRoles.stream()
 					.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-			*/
+			
 			Collection<GrantedAuthority> clientListSimpleGrantedAuthority = clientRoles.stream()
 					.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-			//realmListSimpleGrantedAuthority.addAll(clientListSimpleGrantedAuthority);
+			realmListSimpleGrantedAuthority.addAll(clientListSimpleGrantedAuthority);
+			
+			//clientListSimpleGrantedAuthority.forEach(System.out::println);
 
-			//realmListSimpleGrantedAuthority.forEach(System.out::println);
+			realmListSimpleGrantedAuthority.forEach(System.out::println);
 
-			//return realmListSimpleGrantedAuthority;
-			return clientListSimpleGrantedAuthority;
+			return realmListSimpleGrantedAuthority;
+			//return clientListSimpleGrantedAuthority;
 		};
 
 		JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
@@ -95,4 +111,13 @@ public class SecurityConfig {
 
 		return jwtAuthenticationConverter;
 	}
+	
+	/*
+	@Bean
+	public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
+		return http.build();
+	}*/
+	
+
 }
+	

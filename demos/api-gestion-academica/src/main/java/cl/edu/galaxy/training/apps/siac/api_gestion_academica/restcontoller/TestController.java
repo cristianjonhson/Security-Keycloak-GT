@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/test")  
+@RequestMapping("/api/v1/test")
 public class TestController {
 	
     @GetMapping("/libre/demo")
@@ -15,32 +15,34 @@ public class TestController {
     }
 
     @GetMapping("/private/endpoint1")
-    @PreAuthorize("hasAnyAuthority('invitado')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String endpoint1() {
-        return "User board";
+        return "User board- admin";
+    }
+    
+    @GetMapping("/private/endpoint2")
+    @PreAuthorize("hasAuthority('director')")
+    public String endpoint3() {
+        return "User board - director";
     }
     
     @GetMapping("/private/endpoint3")
-    @PreAuthorize("hasAnyAuthority('super')")
-    public String endpoint3() {
-        return "User board";
-    }
-    
-    @GetMapping("/private/endpoint4")
-    @PreAuthorize("hasAnyAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('profesor')")
     public String endpoint4() {
-        return "User board";
+        return "User board - profesor";
     }
     
+   
     @GetMapping("/private/endpoint5")
     @PreAuthorize("hasRole('DEMO')") //ROLE_DEMO -> Keycloak
     public String endpoint5() {
         return "User board";
     }
 
+    /*
     @GetMapping("/private/endpoint2")
     @PreAuthorize("hasRole('administrator')")
     public String endpoint2() {
         return "Administrator board";
-    }
+    }*/
 }

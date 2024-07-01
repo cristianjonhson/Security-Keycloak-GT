@@ -2,19 +2,35 @@ package cl.edu.galaxy.training.apps.siac.api_gestion_academica.entity;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
 //JPA
-
-public class CompanyEntity {
+@Entity(name = "Company")	   // Java- Entity- JPQL	
+@Table(name = "tbl_company")   // BD
+public class CompanyEntity {   // Java-Beans(Clase) 
 	
+	@Id
+	@Column(name = "company_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "company",length = 260)
 	private String company;
 	
+	@Column(name = "contact",length = 160)
 	private String contact;
 	
+	@Column(name = "country",length = 120)
 	private String country;
+
+	@Column(name = "state",length = 1)
+	private String state;
 
 	
 	public CompanyEntity() {
@@ -59,6 +75,16 @@ public class CompanyEntity {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	
+	
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	@Override
