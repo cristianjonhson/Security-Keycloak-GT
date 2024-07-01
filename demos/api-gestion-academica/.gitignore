@@ -1,15 +1,17 @@
-HELP.md
+### Maven ###
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+### Eclipse ###
 .project
-.settings
+.classpath
+.settings/
+bin/
+tmp/
+
+### STS (Spring Tool Suite) ###
+.apt_generated
+.factorypath
 .springBeans
 .sts4-cache
 
@@ -31,3 +33,71 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Logs ###
+*.log
+
+### Temporary files ###
+tmp/
+*.tmp
+*.swp
+*.swo
+*~
+
+### General ###
+# Compiled class file
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Thumbnails
+._*
+
+# Folders to ignore
+*~
+
+# Directories to ignore
+.DS_Store
+*.class
+*.log
+*.ctxt
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pid
+*.seed
+*.backup
+*.bak
+*.orig
+*.tmp
+*.swp
+*.swo
+*.err
+*.out
+*.map
+*.app
+*.o
+*.a
+*.lib
+*.dll
+*.so
+*.so.*
+*.dylib
+*.exe
+*.out
+*.app
+*.pdb
+*.ipdb
+*.pth
+*.pyc
+*.pyo
+*.pyd
+*.pydevproject
+*.project
+*.pydevproject
+*.project
+.macosx/
