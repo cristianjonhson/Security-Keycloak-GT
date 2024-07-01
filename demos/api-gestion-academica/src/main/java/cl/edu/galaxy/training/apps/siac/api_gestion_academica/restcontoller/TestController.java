@@ -21,7 +21,7 @@ public class TestController {
     }
     
     @GetMapping("/private/endpoint2")
-    @PreAuthorize("hasAuthority('director')")
+    @PreAuthorize("hasAuthority('director_Academico')")
     public String endpoint3() {
         return "User board - director";
     }
