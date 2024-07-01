@@ -23,7 +23,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:6080/realms/real_academico_v1/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:6082/realms/real_academico_v1/protocol/openid-connect/certs
 
 keycloak:
    resource: api-gestion-academica
