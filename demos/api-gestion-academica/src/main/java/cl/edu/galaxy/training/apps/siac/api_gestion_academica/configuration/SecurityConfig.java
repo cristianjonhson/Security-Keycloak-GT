@@ -25,99 +25,105 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Clase de configuración para establecer la seguridad en la aplicación.
+ * Esta clase habilita la seguridad web y la seguridad de métodos, y configura
+ * la cadena de filtros de seguridad y el convertidor de autenticación JWT para Keycloak.
+ */
 @Slf4j
 @SuppressWarnings("unchecked")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-	
-	@Value("${keycloak.resource}")
-	private String clienId; // Application
+    
+    @Value("${keycloak.resource}")
+    private String clienId; // ID del cliente en Keycloak
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-		log.info("filterChain...");
-		
-		http.authorizeHttpRequests(auth -> {
-			
-			auth.requestMatchers("/api/v1/demos/**").permitAll();
-			
-			auth.requestMatchers("/api/v1/test/**","/api/v1/companies/**");
-			
-			auth.requestMatchers("/api/v1/companies/private/**").hasAuthority("admin").anyRequest().fullyAuthenticated();
-			
-			//auth.requestMatchers("/api/v1/companies/**").hasAnyAuthority("admin","director","profesor").anyRequest().fullyAuthenticated();
-		
-			
-		}).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+    /**
+     * Configura la cadena de filtros de seguridad.
+     *
+     * @param http objeto HttpSecurity para configurar la seguridad.
+     * @return la cadena de filtros de seguridad configurada.
+     * @throws Exception si ocurre un error al configurar la seguridad.
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        
+        log.info("filterChain...");
+        
+        http.authorizeHttpRequests(auth -> {
+            
+            auth.requestMatchers("/api/v1/demos/**").permitAll();
+            
+            auth.requestMatchers("/api/v1/test/**", "/api/v1/companies/**");
+            
+            auth.requestMatchers("/api/v1/companies/private/**").hasAuthority("admin").anyRequest().fullyAuthenticated();
+            
+            //auth.requestMatchers("/api/v1/companies/**").hasAnyAuthority("admin", "director", "profesor").anyRequest().fullyAuthenticated();
+        
+        }).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
 
-		return http.build();
-	}
+        return http.build();
+    }
 
-	@Bean
-	public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
-		Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
-			
-			log.info("jwtAuthenticationConverterForKeycloak...");
-			/*
-			Map<String, Object> claims = jwt.getClaims();
+    /**
+     * Configura el convertidor de autenticación JWT para Keycloak.
+     *
+     * @return el convertidor de autenticación JWT configurado.
+     */
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
+        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
+            
+            log.info("jwtAuthenticationConverterForKeycloak...");
 
-			for (String key : claims.keySet()) {
-				log.info(" - key {} -> {}", key, claims.get(key));
-			}*/
-			
-			
-			Object realm = jwt.getClaim("realm_access");
+            Map<String, Object> claims = jwt.getClaims();
 
-			LinkedTreeMap<String, List<String>> realmRoleMap = (LinkedTreeMap<String, List<String>>) realm;
-
-			List<String> realmRoles = new ArrayList<>(realmRoleMap.get("roles"));
-			
-			Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
+            for (String key : claims.keySet()) {
+                log.info(" - key {} -> {}", key, claims.get(key));
+            }
+            
+            Object realm = jwt.getClaim("realm_access");
+            LinkedTreeMap<String, List<String>> realmRoleMap = (LinkedTreeMap<String, List<String>>) realm;
+            List<String> realmRoles = new ArrayList<>(realmRoleMap.get("roles"));
+            
+            Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
 
 			/*
 			for (String key : resourceAccess.keySet()) {
 				log.info("key {} -> {}", key, resourceAccess.get(key));
 			}*/
 
-			Object client = resourceAccess.get(clienId);
+            Object client = resourceAccess.get(clienId);
+            LinkedTreeMap<String, List<String>> clientRoleMap = (LinkedTreeMap<String, List<String>>) client;
+            List<String> clientRoles = new ArrayList<>(clientRoleMap.get("roles"));
+            
+            Collection<GrantedAuthority> realmListSimpleGrantedAuthority = realmRoles.stream()
+                    .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+            
+            Collection<GrantedAuthority> clientListSimpleGrantedAuthority = clientRoles.stream()
+                    .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-			LinkedTreeMap<String, List<String>> clientRoleMap = (LinkedTreeMap<String, List<String>>) client;
-
-			List<String> clientRoles = new ArrayList<>(clientRoleMap.get("roles"));
-			
-			
-			Collection<GrantedAuthority> realmListSimpleGrantedAuthority = realmRoles.stream()
-					.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-			
-			Collection<GrantedAuthority> clientListSimpleGrantedAuthority = clientRoles.stream()
-					.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-
-			realmListSimpleGrantedAuthority.addAll(clientListSimpleGrantedAuthority);
+            realmListSimpleGrantedAuthority.addAll(clientListSimpleGrantedAuthority);
 			
 			//clientListSimpleGrantedAuthority.forEach(System.out::println);
+            
+            realmListSimpleGrantedAuthority.forEach(System.out::println);
 
-			realmListSimpleGrantedAuthority.forEach(System.out::println);
-
-			return realmListSimpleGrantedAuthority;
+            return realmListSimpleGrantedAuthority;
 			//return clientListSimpleGrantedAuthority;
-		};
+        };
 
-		JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-
-		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-
-		return jwtAuthenticationConverter;
-	}
-	
-	/*
-	@Bean
-	public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
-		return http.build();
-	}*/
-	
-
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        return jwtAuthenticationConverter;
+    }
+    
+    /*
+    @Bean
+    public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
+        return http.build();
+    }
+    */
 }
-	
