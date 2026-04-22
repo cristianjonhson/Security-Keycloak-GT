@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# Java / Maven
+**/target/
+*.class
+
+# Optional local env files
+.env
+.env.*
+!.env.example
