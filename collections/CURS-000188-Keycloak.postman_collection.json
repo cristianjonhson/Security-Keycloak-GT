@@ -45,12 +45,12 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8082/realms/REALM_DEMO_V1/protocol/openid-connect/token",
+							"raw": "http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/token",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8082",
+							"port": "6082",
 							"path": [
 								"realms",
 								"REALM_DEMO_V1",
@@ -87,7 +87,7 @@
 						},
 						{
 							"key": "accessTokenUrl",
-							"value": "http://localhost:8082/realms/REALM_DEMO_V1/protocol/openid-connect/token",
+							"value": "http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/token",
 							"type": "string"
 						},
 						{
