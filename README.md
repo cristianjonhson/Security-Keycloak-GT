@@ -110,7 +110,7 @@ Valores relevantes actuales:
 - Base de datos MySQL: jdbc:mysql://localhost:3306/db_academica?createDatabaseIfNotExist=true&useSSL=true
 - Usuario MySQL: root
 - Password MySQL: 123456
-- JWK Set URI configurado: http://localhost:6082/realms/real_academico_v1/protocol/openid-connect/certs
+- JWK Set URI configurado: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs
 - Client ID esperado por la API: api-gestion-academica
 
 Recomendación práctica:
@@ -218,18 +218,24 @@ Los datos semilla insertan registros iniciales en la tabla de compañías para f
 
 ## Consideraciones Importantes
 
-Hay una diferencia de configuración que conviene resolver antes de usar el proyecto sin fricción:
+La configuración por defecto del repositorio quedó alineada con esta combinación:
 
-- La API apunta al realm real_academico_v1 en el puerto 6082 desde [demos/api-gestion-academica/src/main/resources/application.yml](demos/api-gestion-academica/src/main/resources/application.yml).
-- El realm exportado en [Keycloak/realm-export.json](Keycloak/realm-export.json) se llama REALM_DEMO_V1.
-- La colección Postman también usa REALM_DEMO_V1 y apunta a localhost:8082 para obtener tokens.
+- Realm: REALM_DEMO_V1
+- Keycloak: http://localhost:6082
+- JWK Set URI de la API: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs
+- Endpoint de token para Postman: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/token
 
-Eso significa que, para una ejecución coherente, debes hacer coincidir al menos estos elementos:
+Con esa convención:
 
-- nombre del realm en Keycloak
-- JWK Set URI de la API
-- endpoint de token en Postman
-- puerto expuesto por la instancia de Keycloak que vayas a usar
+- la API consume las claves públicas del mismo realm exportado en [Keycloak/realm-export.json](Keycloak/realm-export.json)
+- la colección Postman solicita tokens contra la misma instancia de Keycloak
+- el stack recomendado para pruebas sigue siendo [KC-PostgreSql/docker-compose.yml](KC-PostgreSql/docker-compose.yml), que publica Keycloak en el puerto 6082
+
+Si decides usar otra instancia o puerto, actualiza en conjunto:
+
+- el nombre del realm en Keycloak
+- el JWK Set URI en [demos/api-gestion-academica/src/main/resources/application.yml](demos/api-gestion-academica/src/main/resources/application.yml)
+- el endpoint de token en [collections/CURS-000188-Keycloak.postman_collection.json](collections/CURS-000188-Keycloak.postman_collection.json)
 
 # Guía de Keycloak
 
