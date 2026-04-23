@@ -38,7 +38,7 @@ La API expone endpoints públicos y privados y convierte roles del token JWT de 
 - OAuth2 Resource Server
 - Spring Data JPA
 - Keycloak 25.0.0
-- MySQL
+- PostgreSQL
 - Docker y Docker Compose
 - Maven Wrapper
 - Lombok
@@ -89,7 +89,7 @@ Para ejecutar el proyecto necesitas:
 
 - Java 17 instalado.
 - Docker y Docker Compose instalados.
-- Una instancia de MySQL accesible desde la API.
+- Una instancia de PostgreSQL accesible desde la API.
 - Acceso a Maven Wrapper o Maven local.
 
 Versiones y parámetros observados en el repositorio:
@@ -107,9 +107,9 @@ Valores relevantes actuales:
 
 - Puerto de la API: 8082
 - Context path: /api-gestion-academica
-- Base de datos MySQL: jdbc:mysql://localhost:3306/db_academica?createDatabaseIfNotExist=true&useSSL=true
-- Usuario MySQL: root
-- Password MySQL: 123456
+- Base de datos PostgreSQL: jdbc:postgresql://localhost:5432/db_academica
+- Usuario PostgreSQL: postgres
+- Password PostgreSQL: postgres
 - JWK Set URI configurado: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs
 - Client ID esperado por la API: api-gestion-academica
 
@@ -152,15 +152,21 @@ docker compose up -d
 
 En esa variante, Keycloak queda expuesto en http://localhost:8080 con credenciales admin/admin. Esta opción no coincide con la URL JWK configurada por defecto en la API, por lo que requiere ajustar [demos/api-gestion-academica/src/main/resources/application.yml](demos/api-gestion-academica/src/main/resources/application.yml) si decides usarla.
 
-### Base de datos MySQL
+### Base de datos PostgreSQL
 
-La API espera una base de datos MySQL local accesible en localhost:3306. Con la configuración actual:
+La API espera una base de datos PostgreSQL local accesible en localhost:5432. Con la configuración actual:
 
 - Base de datos: db_academica
-- Usuario: root
-- Password: 123456
+- Usuario: postgres
+- Password: postgres
 
-La URL activa createDatabaseIfNotExist=true, por lo que la base puede crearse automáticamente si el usuario tiene permisos.
+La configuración soporta variables de entorno para contenedores o despliegues:
+
+- DB_HOST (default: localhost)
+- DB_PORT (default: 5432)
+- DB_NAME (default: db_academica)
+- DB_USERNAME (default: postgres)
+- DB_PASSWORD (default: postgres)
 
 ### Ejecutar la API
 
