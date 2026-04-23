@@ -168,6 +168,22 @@ La configuración soporta variables de entorno para contenedores o despliegues:
 - DB_USERNAME (default: postgres)
 - DB_PASSWORD (default: postgres)
 
+Bootstrap en un solo comando (crea rol y base de datos automáticamente):
+
+```bash
+cd demos/api-gestion-academica
+chmod +x scripts/bootstrap-postgres.sh
+./scripts/bootstrap-postgres.sh
+```
+
+Si tu superusuario PostgreSQL requiere password:
+
+```bash
+cd demos/api-gestion-academica
+chmod +x scripts/bootstrap-postgres.sh
+PG_ADMIN_PASSWORD='tu_password_admin' ./scripts/bootstrap-postgres.sh
+```
+
 ### Ejecutar la API
 
 Desde [demos/api-gestion-academica](demos/api-gestion-academica):
