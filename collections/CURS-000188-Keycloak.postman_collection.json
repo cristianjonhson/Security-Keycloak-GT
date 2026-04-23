@@ -2,24 +2,77 @@
 	"info": {
 		"_postman_id": "4740b882-9e3d-4f10-ad62-235e1a21857d",
 		"name": "CURS-000188-Keycloak",
+		"description": "Coleccion para autenticacion Keycloak y pruebas de la API Gestion Academica.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17675229"
 	},
+	"variable": [
+		{
+			"key": "keycloak_protocol",
+			"value": "http"
+		},
+		{
+			"key": "keycloak_host",
+			"value": "localhost"
+		},
+		{
+			"key": "keycloak_port",
+			"value": "6082"
+		},
+		{
+			"key": "realm",
+			"value": "REALM_DEMO_V1"
+		},
+		{
+			"key": "client_id",
+			"value": "app-web-v1"
+		},
+		{
+			"key": "username",
+			"value": "anovoa"
+		},
+		{
+			"key": "password",
+			"value": "123"
+		},
+		{
+			"key": "scope",
+			"value": "basic"
+		},
+		{
+			"key": "api_base_url",
+			"value": "http://localhost:8082/api-gestion-academica"
+		},
+		{
+			"key": "company_search",
+			"value": "Centro"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	],
 	"item": [
 		{
-			"name": "postman",
+			"name": "00 - Auth",
+			"description": "Obtencion de token y validaciones de autenticacion.",
 			"item": [
 				{
-					"name": "token-body",
+					"name": "Get Token (Password Grant)",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "client_id",
-									"value": "app-web-v1",
+									"value": "{{client_id}}",
 									"type": "text"
 								},
 								{
@@ -29,126 +82,146 @@
 								},
 								{
 									"key": "username",
-									"value": "anovoa",
+									"value": "{{username}}",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "123",
+									"value": "{{password}}",
 									"type": "text"
 								},
 								{
 									"key": "scope",
-									"value": "basic",
+									"value": "{{scope}}",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/token",
-							"protocol": "http",
+							"raw": "{{keycloak_protocol}}://{{keycloak_host}}:{{keycloak_port}}/realms/{{realm}}/protocol/openid-connect/token",
 							"host": [
-								"localhost"
+								"{{keycloak_host}}"
 							],
-							"port": "6082",
+							"port": "{{keycloak_port}}",
 							"path": [
 								"realms",
-								"REALM_DEMO_V1",
+								"{{realm}}",
 								"protocol",
 								"openid-connect",
 								"token"
 							]
 						}
 					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"const response = pm.response.json();",
+									"pm.test('Response contains access token', function () {",
+									"  pm.expect(response.access_token).to.exist;",
+									"});",
+									"pm.collectionVariables.set('access_token', response.access_token);",
+									"pm.collectionVariables.set('refresh_token', response.refresh_token || '');",
+									"pm.collectionVariables.set('token_type', response.token_type || 'Bearer');",
+									"pm.test('Token type is Bearer', function () {",
+									"  pm.expect((response.token_type || '').toLowerCase()).to.eql('bearer');",
+									"});"
+								]
+							}
+						}
+					],
 					"response": []
 				}
 			]
 		},
 		{
-			"name": "token",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "password",
-							"value": "123",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "anovoa",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "app-web-v1",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/token",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "password_credentials",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "body",
-							"type": "string"
-						},
-						{
-							"key": "scope",
-							"value": "basic",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "Keycloak_token",
-							"type": "string"
-						},
-						{
-							"key": "refreshRequestParams",
-							"value": [],
-							"type": "any"
-						},
-						{
-							"key": "tokenRequestParams",
-							"value": [],
-							"type": "any"
-						},
-						{
-							"key": "authRequestParams",
-							"value": [],
-							"type": "any"
-						},
-						{
-							"key": "challengeAlgorithm",
-							"value": "S256",
-							"type": "string"
+			"name": "10 - Public API",
+			"description": "Endpoints publicos de la API.",
+			"item": [
+				{
+					"name": "GET Public Demo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/api/v1/test/libre/demo"
 						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "20 - Protected API",
+			"description": "Endpoints privados que requieren bearer token.",
+			"item": [
+				{
+					"name": "GET Companies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/api/v1/companies"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Companies by Name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/api/v1/companies/by-company?company={{company_search}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Private Endpoint 1 (admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/api/v1/test/private/endpoint1"
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
