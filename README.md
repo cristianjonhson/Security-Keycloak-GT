@@ -184,6 +184,20 @@ chmod +x scripts/bootstrap-postgres.sh
 PG_ADMIN_PASSWORD='tu_password_admin' ./scripts/bootstrap-postgres.sh
 ```
 
+Carga de datos semilla desde [demos/api-gestion-academica/src/main/resources/data.sql](demos/api-gestion-academica/src/main/resources/data.sql):
+
+```bash
+cd demos/api-gestion-academica
+chmod +x scripts/load-data-postgres.sh
+./scripts/load-data-postgres.sh
+```
+
+Comando único de bootstrap completo (base + datos):
+
+```bash
+cd demos/api-gestion-academica && chmod +x scripts/bootstrap-postgres.sh scripts/load-data-postgres.sh && ./scripts/bootstrap-postgres.sh && ./scripts/load-data-postgres.sh
+```
+
 ### Ejecutar la API
 
 Desde [demos/api-gestion-academica](demos/api-gestion-academica):
