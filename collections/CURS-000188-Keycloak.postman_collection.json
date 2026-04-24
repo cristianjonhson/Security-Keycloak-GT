@@ -48,6 +48,14 @@
 			"value": "Centro"
 		},
 		{
+			"key": "expected_status_endpoint2",
+			"value": "403"
+		},
+		{
+			"key": "expected_status_endpoint3",
+			"value": "403"
+		},
+		{
 			"key": "access_token",
 			"value": ""
 		}
@@ -171,7 +179,7 @@
 		},
 		{
 			"name": "20 - Protected API",
-			"description": "Endpoints privados que requieren bearer token.",
+			"description": "Endpoints privados que requieren bearer token. Ajusta expected_status_endpoint2 y expected_status_endpoint3 segun el rol autenticado (200 permitido, 403 denegado).",
 			"item": [
 				{
 					"name": "GET Companies",
@@ -219,6 +227,76 @@
 							"raw": "{{api_base_url}}/api/v1/test/private/endpoint1"
 						}
 					},
+					"response": []
+				},
+				{
+					"name": "GET Private Endpoint 2 (director_Academico)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/api/v1/test/private/endpoint2"
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const expected = Number(pm.collectionVariables.get('expected_status_endpoint2') || 403);",
+									"pm.test('Endpoint2 status segun rol esperado', function () {",
+									"  pm.response.to.have.status(expected);",
+									"});",
+									"if (expected === 200) {",
+									"  pm.test('Respuesta permitida contiene texto de director', function () {",
+									"    pm.expect(pm.response.text().toLowerCase()).to.include('director');",
+									"  });",
+									"}"
+								]
+							}
+						}
+					],
+					"response": []
+				},
+				{
+					"name": "GET Private Endpoint 3 (profesor)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/api/v1/test/private/endpoint3"
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const expected = Number(pm.collectionVariables.get('expected_status_endpoint3') || 403);",
+									"pm.test('Endpoint3 status segun rol esperado', function () {",
+									"  pm.response.to.have.status(expected);",
+									"});",
+									"if (expected === 200) {",
+									"  pm.test('Respuesta permitida contiene texto de profesor', function () {",
+									"    pm.expect(pm.response.text().toLowerCase()).to.include('profesor');",
+									"  });",
+									"}"
+								]
+							}
+						}
+					],
 					"response": []
 				}
 			]
