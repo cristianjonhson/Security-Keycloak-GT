@@ -254,6 +254,15 @@ Ejemplos prácticos:
 - expected_status_endpoint2=200
 - expected_status_endpoint3=200
 
+Tabla rápida de validación:
+
+| Usuario tipo | Rol esperado | Status endpoint2 | Status endpoint3 |
+| --- | --- | --- | --- |
+| Solo director | director_Academico | 200 | 403 |
+| Solo profesor | profesor | 403 | 200 |
+| Director y profesor | director_Academico + profesor | 200 | 200 |
+| Sin roles requeridos | ninguno | 403 | 403 |
+
 ## Endpoints Relevantes
 
 Algunos endpoints identificados en el código:
