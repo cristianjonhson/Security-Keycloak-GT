@@ -12,6 +12,7 @@ El foco del proyecto está en mostrar autenticación con JWT, autorización por 
 - [Requisitos Previos](#requisitos-previos)
 - [Configuración](#configuración)
 - [Cómo Ejecutarlo](#cómo-ejecutarlo)
+- [Uso de la Colección Postman](#uso-de-la-colección-postman)
 - [Endpoints Relevantes](#endpoints-relevantes)
 - [Recursos Incluidos](#recursos-incluidos)
 - [Consideraciones Importantes](#consideraciones-importantes)
@@ -217,6 +218,41 @@ java -jar target/api-gestion-academica-0.0.1-SNAPSHOT.jar
 Una vez iniciada, la API debería quedar accesible en:
 
 - http://localhost:8082/api-gestion-academica
+
+## Uso de la Colección Postman
+
+La colección está en [collections/CURS-000188-Keycloak.postman_collection.json](collections/CURS-000188-Keycloak.postman_collection.json).
+
+Flujo recomendado:
+
+1. Importa la colección en Postman.
+2. Revisa variables de colección y ajusta si corresponde:
+- keycloak_protocol, keycloak_host, keycloak_port, realm
+- client_id, username, password, scope
+- api_base_url
+3. Ejecuta request [Get Token (Password Grant)](collections/CURS-000188-Keycloak.postman_collection.json) dentro de carpeta 00 - Auth.
+4. La colección guarda automáticamente access_token para los endpoints protegidos.
+5. Ejecuta requests de 10 - Public API y 20 - Protected API.
+
+Validación por roles (endpoint2 y endpoint3):
+
+1. Antes de ejecutar endpoint2 y endpoint3, configura:
+- expected_status_endpoint2
+- expected_status_endpoint3
+2. Usa valor 200 cuando el usuario autenticado tenga el rol requerido.
+3. Usa valor 403 cuando el usuario autenticado no tenga el rol requerido.
+
+Ejemplos prácticos:
+
+1. Usuario con rol director_Academico y sin rol profesor:
+- expected_status_endpoint2=200
+- expected_status_endpoint3=403
+2. Usuario con rol profesor y sin rol director_Academico:
+- expected_status_endpoint2=403
+- expected_status_endpoint3=200
+3. Usuario con ambos roles:
+- expected_status_endpoint2=200
+- expected_status_endpoint3=200
 
 ## Endpoints Relevantes
 
