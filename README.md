@@ -28,7 +28,7 @@ Este repositorio contiene principalmente los siguientes componentes:
 - Un realm exportado en [Keycloak/realm-export.json](Keycloak/realm-export.json).
 - Una colección Postman para pruebas manuales en [collections/CURS-000188-Keycloak.postman_collection.json](collections/CURS-000188-Keycloak.postman_collection.json).
 
-La API expone endpoints públicos y privados y convierte roles del token JWT de Keycloak en authorities de Spring Security. El módulo también inicializa datos de ejemplo en base de datos mediante [demos/api-gestion-academica/src/main/resources/import.sql](demos/api-gestion-academica/src/main/resources/import.sql).
+La API expone endpoints públicos y privados y convierte roles del token JWT de Keycloak en authorities de Spring Security. El módulo también inicializa datos de ejemplo en base de datos mediante [demos/api-gestion-academica/src/main/resources/data.sql](demos/api-gestion-academica/src/main/resources/data.sql).
 
 ## Tecnologías Utilizadas
 
@@ -36,6 +36,7 @@ La API expone endpoints públicos y privados y convierte roles del token JWT de 
 - Spring Boot 3.3.0
 - Spring Web
 - Spring Security
+- Spring Security Test (tests)
 - OAuth2 Resource Server
 - Spring Data JPA
 - Keycloak 25.0.0
@@ -67,6 +68,7 @@ La API expone endpoints públicos y privados y convierte roles del token JWT de 
 │           │   │       └── service/
 │           │   └── resources/
 │           │       ├── application.yml
+│           │       ├── data.sql
 │           │       └── import.sql
 │           └── test/
 ├── KC-PostgreSql/
@@ -111,8 +113,13 @@ Valores relevantes actuales:
 - Base de datos PostgreSQL: jdbc:postgresql://localhost:5432/db_academica
 - Usuario PostgreSQL: postgres
 - Password PostgreSQL: postgres
+- open-in-view: false
 - JWK Set URI configurado: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs
 - Client ID esperado por la API: api-gestion-academica
+
+Notas de configuración:
+
+- El dialecto de PostgreSQL no se declara explícitamente en JPA para evitar warnings de Hibernate; se detecta automáticamente.
 
 Recomendación práctica:
 
@@ -187,6 +194,8 @@ PG_ADMIN_PASSWORD='tu_password_admin' ./scripts/bootstrap-postgres.sh
 
 Carga de datos semilla desde [demos/api-gestion-academica/src/main/resources/data.sql](demos/api-gestion-academica/src/main/resources/data.sql):
 
+- El script es idempotente (`ON CONFLICT (company_id) DO NOTHING`) para evitar errores por llave primaria duplicada en ejecuciones repetidas.
+
 ```bash
 cd demos/api-gestion-academica
 chmod +x scripts/load-data-postgres.sh
@@ -214,6 +223,14 @@ Alternativamente:
 ./mvnw clean package
 java -jar target/api-gestion-academica-0.0.1-SNAPSHOT.jar
 ```
+
+Validación rápida recomendada:
+
+```bash
+./mvnw test
+```
+
+Resultado esperado en este repositorio: BUILD SUCCESS con 4 tests (incluyendo pruebas de integración de seguridad con MockMvc).
 
 Una vez iniciada, la API debería quedar accesible en:
 
@@ -283,6 +300,14 @@ Autorización observada en el código:
 - director o admin: permitido para actualización parcial de situación.
 - profesor: permitido para un endpoint de prueba específico.
 
+Pruebas automáticas de seguridad:
+
+- [demos/api-gestion-academica/src/test/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/SecurityIntegrationTests.java](demos/api-gestion-academica/src/test/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/SecurityIntegrationTests.java)
+- Cobertura actual:
+   - público sin token -> 200
+   - endpoint privado sin token -> 401
+   - endpoint privado con rol incorrecto -> 403
+
 Referencia de implementación:
 
 - Seguridad: [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/configuration/SecurityConfig.java](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/configuration/SecurityConfig.java)
@@ -293,7 +318,8 @@ Referencia de implementación:
 
 - Realm exportado: [Keycloak/realm-export.json](Keycloak/realm-export.json)
 - Colección Postman: [collections/CURS-000188-Keycloak.postman_collection.json](collections/CURS-000188-Keycloak.postman_collection.json)
-- Datos semilla: [demos/api-gestion-academica/src/main/resources/import.sql](demos/api-gestion-academica/src/main/resources/import.sql)
+- Datos semilla principales: [demos/api-gestion-academica/src/main/resources/data.sql](demos/api-gestion-academica/src/main/resources/data.sql)
+- Script de datos alternativo incluido en el repositorio: [demos/api-gestion-academica/src/main/resources/import.sql](demos/api-gestion-academica/src/main/resources/import.sql)
 
 Los datos semilla insertan registros iniciales en la tabla de compañías para facilitar pruebas de consulta.
 
