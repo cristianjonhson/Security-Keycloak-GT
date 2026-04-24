@@ -22,13 +22,13 @@ public class TestController {
 
     @GetMapping("/private/endpoint2")
     @PreAuthorize("hasAuthority('director_Academico')")
-    public String endpoint3() {
+    public String endpoint2() {
         return "User board - director";
     }
 
     @GetMapping("/private/endpoint3")
     @PreAuthorize("hasAnyAuthority('profesor')")
-    public String endpoint4() {
+    public String endpoint3() {
         return "User board - profesor";
     }
 
@@ -37,13 +37,4 @@ public class TestController {
     public String endpoint5() {
         return "User board";
     }
-
-    /*
-     * @GetMapping("/private/endpoint2")
-     * 
-     * @PreAuthorize("hasRole('administrator')")
-     * public String endpoint2() {
-     * return "Administrator board";
-     * }
-     */
 }
