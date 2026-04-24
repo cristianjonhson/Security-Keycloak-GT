@@ -36,7 +36,7 @@ La API expone endpoints públicos y privados y convierte roles del token JWT de 
 - Spring Boot 3.3.0
 - Spring Web
 - Spring Security
-- Spring Security Test (tests)
+- Spring Security Test (pruebas)
 - OAuth2 Resource Server
 - Spring Data JPA
 - Keycloak 25.0.0
@@ -112,7 +112,7 @@ Valores relevantes actuales:
 - Context path: /api-gestion-academica
 - Base de datos PostgreSQL: jdbc:postgresql://localhost:5432/db_academica
 - Usuario PostgreSQL: postgres
-- Password PostgreSQL: postgres
+- Contraseña PostgreSQL: postgres
 - open-in-view: false
 - JWK Set URI configurado: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs
 - Client ID esperado por la API: api-gestion-academica
@@ -144,7 +144,7 @@ docker compose up -d
 
 - URL de acceso esperada: http://localhost:6082
 - Usuario administrador: admin
-- Password administrador: admin
+- Contraseña de administrador: admin
 
 3. Importa o recrea el realm según [Keycloak/realm-export.json](Keycloak/realm-export.json).
 
@@ -166,15 +166,15 @@ La API espera una base de datos PostgreSQL local accesible en localhost:5432. Co
 
 - Base de datos: db_academica
 - Usuario: postgres
-- Password: postgres
+- Contraseña: postgres
 
 La configuración soporta variables de entorno para contenedores o despliegues:
 
-- DB_HOST (default: localhost)
-- DB_PORT (default: 5432)
-- DB_NAME (default: db_academica)
-- DB_USERNAME (default: postgres)
-- DB_PASSWORD (default: postgres)
+- DB_HOST (por defecto: localhost)
+- DB_PORT (por defecto: 5432)
+- DB_NAME (por defecto: db_academica)
+- DB_USERNAME (por defecto: postgres)
+- DB_PASSWORD (por defecto: postgres)
 
 Bootstrap en un solo comando (crea rol y base de datos automáticamente):
 
@@ -184,7 +184,7 @@ chmod +x scripts/bootstrap-postgres.sh
 ./scripts/bootstrap-postgres.sh
 ```
 
-Si tu superusuario PostgreSQL requiere password:
+Si tu superusuario PostgreSQL requiere contraseña:
 
 ```bash
 cd demos/api-gestion-academica
@@ -247,9 +247,9 @@ Flujo recomendado:
 - keycloak_protocol, keycloak_host, keycloak_port, realm
 - client_id, username, password, scope
 - api_base_url
-3. Ejecuta request [Get Token (Password Grant)](collections/CURS-000188-Keycloak.postman_collection.json) dentro de carpeta 00 - Auth.
+3. Ejecuta la solicitud [Get Token (Password Grant)](collections/CURS-000188-Keycloak.postman_collection.json) dentro de la carpeta 00 - Auth.
 4. La colección guarda automáticamente access_token para los endpoints protegidos.
-5. Ejecuta requests de 10 - Public API y 20 - Protected API.
+5. Ejecuta las solicitudes de 10 - Public API y 20 - Protected API.
 
 Validación por roles (endpoint2 y endpoint3):
 
@@ -273,7 +273,7 @@ Ejemplos prácticos:
 
 Tabla rápida de validación:
 
-| Usuario tipo | Rol esperado | Status endpoint2 | Status endpoint3 |
+| Usuario tipo | Rol esperado | Estado endpoint2 | Estado endpoint3 |
 | --- | --- | --- | --- |
 | Solo director | director_Academico | 200 | 403 |
 | Solo profesor | profesor | 403 | 200 |
@@ -371,7 +371,7 @@ Si decides usar otra instancia o puerto, actualiza en conjunto:
 - **Adaptadores de Cliente:**
   - Son bibliotecas que se integran con aplicaciones para facilitar la comunicación con el servidor de Keycloak. Estos adaptadores están disponibles para diversos lenguajes y plataformas.
 
-- **Console de Administración:**
+- **Consola de Administración:**
   - Una interfaz web que permite a los administradores gestionar realms, usuarios, clientes, roles, y políticas.
 
 - **API REST:**
