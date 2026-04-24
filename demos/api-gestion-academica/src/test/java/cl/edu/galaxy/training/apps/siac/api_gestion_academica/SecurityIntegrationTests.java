@@ -14,25 +14,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class SecurityIntegrationTests {
 
+    private static final String PUBLIC_ENDPOINT = "/api/v1/test/libre/demo";
+    private static final String PRIVATE_ENDPOINT_1 = "/api/v1/test/private/endpoint1";
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void publicEndpointShouldReturn200WithoutToken() throws Exception {
-        mockMvc.perform(get("/api/v1/test/libre/demo"))
+    void shouldReturn200WhenPublicEndpointIsRequestedWithoutToken() throws Exception {
+        mockMvc.perform(get(PUBLIC_ENDPOINT))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void privateEndpointShouldReturn401WithoutToken() throws Exception {
-        mockMvc.perform(get("/api/v1/test/private/endpoint1"))
+    void shouldReturn401WhenPrivateEndpointIsRequestedWithoutToken() throws Exception {
+        mockMvc.perform(get(PRIVATE_ENDPOINT_1))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = "test-user", authorities = { "profesor" })
-    void privateEndpointShouldReturn403WithWrongRole() throws Exception {
-        mockMvc.perform(get("/api/v1/test/private/endpoint1"))
+    void shouldReturn403WhenPrivateEndpointIsRequestedWithWrongRole() throws Exception {
+        mockMvc.perform(get(PRIVATE_ENDPOINT_1))
                 .andExpect(status().isForbidden());
     }
 }
