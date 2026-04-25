@@ -64,7 +64,7 @@ La API expone endpoints públicos y privados y convierte roles del token JWT de 
 │           │   │       ├── configuration/
 │           │   │       ├── entity/
 │           │   │       ├── repository/
-│           │   │       ├── restcontoller/
+│           │   │       ├── restcontroller/
 │           │   │       └── service/
 │           │   └── resources/
 │           │       ├── application.yml
@@ -81,7 +81,7 @@ Resumen por carpeta:
 
 - [demos/api-gestion-academica](demos/api-gestion-academica): aplicación principal Spring Boot.
 - [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/configuration](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/configuration): configuración de seguridad y JWT.
-- [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontoller](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontoller): endpoints de prueba y CRUD.
+- [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontroller](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontroller): endpoints de prueba y CRUD.
 - [KC-PostgreSql](KC-PostgreSql): stack Docker para Keycloak persistido en PostgreSQL.
 - [Keycloak](Keycloak): export de configuración de realm.
 - [collections](collections): colección Postman para obtener tokens y probar endpoints.
@@ -311,8 +311,8 @@ Pruebas automáticas de seguridad:
 Referencia de implementación:
 
 - Seguridad: [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/configuration/SecurityConfig.java](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/configuration/SecurityConfig.java)
-- Controlador CRUD: [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontoller/CompanyRestController.java](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontoller/CompanyRestController.java)
-- Controlador de pruebas: [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontoller/TestController.java](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontoller/TestController.java)
+- Controlador CRUD: [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontroller/CompanyRestController.java](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontroller/CompanyRestController.java)
+- Controlador de pruebas: [demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontroller/TestController.java](demos/api-gestion-academica/src/main/java/cl/edu/galaxy/training/apps/siac/api_gestion_academica/restcontroller/TestController.java)
 
 ## Recursos Incluidos
 
