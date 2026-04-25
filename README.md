@@ -119,7 +119,7 @@ Valores relevantes actuales:
 
 Notas de configuración:
 
-- El dialecto de PostgreSQL no se declara explícitamente en JPA para evitar warnings de Hibernate; se detecta automáticamente.
+- El dialecto de PostgreSQL no se declara explícitamente en JPA para evitar advertencias de Hibernate; se detecta automáticamente.
 
 Recomendación práctica:
 
@@ -249,7 +249,7 @@ Flujo recomendado:
 - api_base_url
 3. Ejecuta la solicitud [Get Token (Password Grant)](collections/CURS-000188-Keycloak.postman_collection.json) dentro de la carpeta 00 - Auth.
 4. La colección guarda automáticamente access_token para los endpoints protegidos.
-5. Ejecuta las solicitudes de 10 - Public API y 20 - Protected API.
+5. Ejecuta las solicitudes de las carpetas 10 - Public API y 20 - Protected API.
 
 Validación por roles (endpoint2 y endpoint3):
 
@@ -346,7 +346,7 @@ Si decides usar otra instancia o puerto, actualiza en conjunto:
 
 # Guía de Keycloak
 
-## Conceptos Core de Keycloak
+## Conceptos Clave de Keycloak
 
 1. **Realm (Real):**
    - Un realm en Keycloak es una unidad de gestión que agrupa usuarios, credenciales, roles y grupos. Cada realm es independiente y aísla los datos y configuraciones de seguridad de los demás. Un realm puede ser considerado como un dominio de seguridad que tiene sus propias políticas de autenticación y autorización.
@@ -396,7 +396,7 @@ Si decides usar otra instancia o puerto, actualiza en conjunto:
    - Al autenticarse, el cliente recibe un JWT (JSON Web Token) que contiene información sobre el usuario autenticado y sus permisos.
    - El token incluye una firma digital que permite verificar su autenticidad y asegurar que no ha sido modificado.
 
-## Configurando Resources & Scopes
+## Configuración de Recursos y Scopes
 
 1. **Recursos (Resources):**
    - Representan las entidades protegidas por Keycloak, como endpoints de API o servicios. Cada recurso puede tener una o más scopes que definen los niveles de acceso permitidos.
@@ -404,7 +404,7 @@ Si decides usar otra instancia o puerto, actualiza en conjunto:
 2. **Scopes:**
    - Son permisos específicos asignados a recursos. Por ejemplo, un recurso 'document' podría tener scopes como 'view', 'edit', y 'delete'.
 
-## Configurando Policies (Client Based Policy) & Permissions
+## Configuración de Policies (Client Based Policy) y Permissions
 
 1. **Policies (Políticas):**
    - Define las reglas de acceso que determinan si una solicitud debe ser permitida o denegada. Las políticas pueden basarse en roles, grupos, atributos de usuario, y otros criterios.
@@ -416,7 +416,7 @@ Si decides usar otra instancia o puerto, actualiza en conjunto:
 ## Roadmap para Aprender Keycloak
 
 1. **Conceptos Básicos:**
-   - Familiarízate con los conceptos core de Keycloak: realm, client, role, y user.
+   - Familiarízate con los conceptos clave de Keycloak: realm, client, role y user.
    - Explora la consola de administración y crea tus primeros realms y usuarios.
 
 2. **Configuración de Clientes:**
@@ -432,11 +432,11 @@ Si decides usar otra instancia o puerto, actualiza en conjunto:
    - Configura single sign-on (SSO) y manage session.
 
 5. **Seguridad Avanzada:**
-   - Configura multifactor authentication (MFA) y políticas de seguridad avanzadas.
+   - Configura autenticación multifactor (MFA) y políticas de seguridad avanzadas.
    - Aprende sobre la gestión de identidades y federación de identidades.
 
 6. **Despliegue y Escalabilidad:**
    - Configura y despliega Keycloak en entornos de producción.
    - Optimiza la configuración para escalar y gestionar grandes cantidades de usuarios y clientes.
 
-Este roadmap te ayudará a profundizar en cada aspecto de Keycloak y a integrarlo de manera efectiva en tus aplicaciones y servicios.
+Esta hoja de ruta te ayudará a profundizar en cada aspecto de Keycloak y a integrarlo de manera efectiva en tus aplicaciones y servicios.
