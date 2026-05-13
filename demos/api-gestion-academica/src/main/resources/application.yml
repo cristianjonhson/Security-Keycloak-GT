@@ -14,8 +14,8 @@ spring:
     show-sql: true
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:db_academica}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    username: ${DB_USERNAME:?set DB_USERNAME}
+    password: ${DB_PASSWORD:?set DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   sql:
