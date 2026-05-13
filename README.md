@@ -144,7 +144,7 @@ export POSTGRES_PASSWORD='cambia_esta_password'
 
 ```bash
 cd KC-PostgreSql
-docker compose up -d
+docker compose --profile dev up -d
 ```
 
 2. Verifica el acceso a Keycloak:
@@ -162,7 +162,7 @@ Nota: el compose actual no hace importación automática del realm, por lo que e
 El archivo [docker-compose.yml](docker-compose.yml) levanta una instancia simple de Keycloak para pruebas rápidas.
 
 ```bash
-docker compose up -d
+docker compose --profile dev up -d
 ```
 
 En esa variante, Keycloak queda expuesto en http://localhost:8080 con credenciales admin/admin. Esta opción no coincide con la URL JWK configurada por defecto en la API, por lo que requiere ajustar [demos/api-gestion-academica/src/main/resources/application.yml](demos/api-gestion-academica/src/main/resources/application.yml) si decides usarla.
