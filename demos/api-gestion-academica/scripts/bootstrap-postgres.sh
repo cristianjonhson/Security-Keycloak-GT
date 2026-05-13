@@ -6,12 +6,12 @@ PG_ADMIN_HOST="${PG_ADMIN_HOST:-localhost}"
 PG_ADMIN_PORT="${PG_ADMIN_PORT:-5432}"
 PG_ADMIN_DB="${PG_ADMIN_DB:-postgres}"
 PG_ADMIN_USER="${PG_ADMIN_USER:-postgres}"
-PG_ADMIN_PASSWORD="${PG_ADMIN_PASSWORD:-}"
+PG_ADMIN_PASSWORD="${PG_ADMIN_PASSWORD:?set PG_ADMIN_PASSWORD}"
 
 # Application database settings (aligned with application.yml defaults).
 APP_DB_NAME="${DB_NAME:-db_academica}"
 APP_DB_USER="${DB_USERNAME:-postgres}"
-APP_DB_PASSWORD="${DB_PASSWORD:-postgres}"
+APP_DB_PASSWORD="${DB_PASSWORD:?set DB_PASSWORD}"
 
 export PGPASSWORD="${PG_ADMIN_PASSWORD}"
 
