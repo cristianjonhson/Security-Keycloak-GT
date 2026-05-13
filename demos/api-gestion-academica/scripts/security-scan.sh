@@ -3,7 +3,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_IMAGE="${APP_IMAGE:-api-gestion-academica:security-scan}"
-TRIVY_IMAGE="${TRIVY_IMAGE:-aquasec/trivy:latest}"
+TRIVY_IMAGE="${TRIVY_IMAGE:-aquasec/trivy:0.71.0}"
 CVSS_THRESHOLD="${CVSS_THRESHOLD:-7}"
 
 cd "${PROJECT_ROOT}"
@@ -19,7 +19,7 @@ if ! command -v ./mvnw >/dev/null 2>&1; then
 fi
 
 echo "[scan] Analizando dependencias Maven..."
-./mvnw -DskipTests org.owasp:dependency-check-maven:check \
+./mvnw -DskipTests org.owasp:dependency-check-maven:12.2.2:check \
   -Ddependency-check.failBuildOnCVSS="${CVSS_THRESHOLD}"
 
 echo "[scan] Construyendo imagen ${APP_IMAGE}..."
