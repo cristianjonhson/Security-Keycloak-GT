@@ -133,7 +133,14 @@ Recomendación práctica:
 
 Esta opción es la más cercana a la configuración que consume la API, porque expone Keycloak por el puerto 6082.
 
-1. Levanta Keycloak y PostgreSQL:
+1. Define las variables sensibles requeridas y levanta Keycloak y PostgreSQL:
+
+```bash
+export KEYCLOAK_ADMIN='admin'
+export KEYCLOAK_ADMIN_PASSWORD='cambia_esta_password'
+export KC_DB_PASSWORD='cambia_esta_password'
+export POSTGRES_PASSWORD='cambia_esta_password'
+```
 
 ```bash
 cd KC-PostgreSql
@@ -178,6 +185,13 @@ La configuración soporta variables de entorno para contenedores o despliegues:
 
 Bootstrap en un solo comando (crea rol y base de datos automáticamente):
 
+Antes de ejecutar el bootstrap, define las contraseñas requeridas:
+
+```bash
+export PG_ADMIN_PASSWORD='cambia_esta_password'
+export DB_PASSWORD='cambia_esta_password'
+```
+
 ```bash
 cd demos/api-gestion-academica
 chmod +x scripts/bootstrap-postgres.sh
@@ -195,6 +209,12 @@ PG_ADMIN_PASSWORD='tu_password_admin' ./scripts/bootstrap-postgres.sh
 Carga de datos semilla desde [demos/api-gestion-academica/src/main/resources/data.sql](demos/api-gestion-academica/src/main/resources/data.sql):
 
 - El script es idempotente (`ON CONFLICT (company_id) DO NOTHING`) para evitar errores por llave primaria duplicada en ejecuciones repetidas.
+
+Antes de ejecutar la carga, define la contraseña de la base:
+
+```bash
+export DB_PASSWORD='cambia_esta_password'
+```
 
 ```bash
 cd demos/api-gestion-academica
@@ -231,6 +251,14 @@ Validación rápida recomendada:
 ```
 
 Resultado esperado en este repositorio: BUILD SUCCESS con 4 tests (incluyendo pruebas de integración de seguridad con MockMvc).
+
+Escaneo reproducible de CVEs:
+
+```bash
+cd demos/api-gestion-academica
+chmod +x scripts/security-scan.sh
+./scripts/security-scan.sh
+```
 
 Una vez iniciada, la API debería quedar accesible en:
 
