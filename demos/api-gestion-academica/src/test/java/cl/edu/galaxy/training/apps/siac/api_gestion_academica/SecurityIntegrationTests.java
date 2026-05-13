@@ -6,12 +6,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.datasource.url=jdbc:postgresql://localhost:5432/db_academica",
+        "spring.datasource.username=postgres",
+        "spring.datasource.password=postgres",
+        "spring.datasource.driver-class-name=org.postgresql.Driver",
+        "keycloak.resource=api-gestion-academica",
+        "spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs"
+})
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class SecurityIntegrationTests {
 
     private static final String PUBLIC_ENDPOINT = "/api/v1/test/libre/demo";
