@@ -3,6 +3,7 @@ services:
   keycloak_web:
     image: quay.io/keycloak/keycloak:25.0.0
     container_name: keycloak_web
+    profiles: ["dev"]
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres_db:5432/keycloak
@@ -28,6 +29,7 @@ services:
   postgres_db:
     image: postgres:16.3
     container_name: postgres_db
+    profiles: ["dev"]
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
