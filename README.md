@@ -111,8 +111,8 @@ Valores relevantes actuales:
 - Puerto de la API: 8082
 - Context path: /api-gestion-academica
 - Base de datos PostgreSQL: jdbc:postgresql://localhost:5432/db_academica
-- Usuario PostgreSQL: postgres
-- Contraseña PostgreSQL: postgres
+- Usuario PostgreSQL: se define por variable de entorno `DB_USERNAME`
+- Contraseña PostgreSQL: se define por variable de entorno `DB_PASSWORD`
 - open-in-view: false
 - JWK Set URI configurado: http://localhost:6082/realms/REALM_DEMO_V1/protocol/openid-connect/certs
 - Client ID esperado por la API: api-gestion-academica
@@ -124,6 +124,7 @@ Notas de configuración:
 Recomendación práctica:
 
 - No dejes credenciales reales en el archivo de configuración para entornos compartidos.
+- Antes de arrancar la API, define `DB_USERNAME` y `DB_PASSWORD`.
 - Si vas a usar otro puerto, realm o client ID, actualiza [demos/api-gestion-academica/src/main/resources/application.yml](demos/api-gestion-academica/src/main/resources/application.yml).
 - Si quieres alinear la documentación operativa con la colección Postman y el realm exportado, revisa la sección de consideraciones importantes más abajo.
 
@@ -172,16 +173,16 @@ En esa variante, Keycloak queda expuesto en http://localhost:8080 con credencial
 La API espera una base de datos PostgreSQL local accesible en localhost:5432. Con la configuración actual:
 
 - Base de datos: db_academica
-- Usuario: postgres
-- Contraseña: postgres
+- Usuario: definido por `DB_USERNAME`
+- Contraseña: definida por `DB_PASSWORD`
 
 La configuración soporta variables de entorno para contenedores o despliegues:
 
 - DB_HOST (por defecto: localhost)
 - DB_PORT (por defecto: 5432)
 - DB_NAME (por defecto: db_academica)
-- DB_USERNAME (por defecto: postgres)
-- DB_PASSWORD (por defecto: postgres)
+- DB_USERNAME (obligatoria)
+- DB_PASSWORD (obligatoria)
 
 Bootstrap en un solo comando (crea rol y base de datos automáticamente):
 
